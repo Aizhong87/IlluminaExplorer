@@ -34,6 +34,10 @@ namespace IlluminaExplorer
             this.btnBrowse = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblFileSearched = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lblFiles = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.cbDelimeter = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnRead = new System.Windows.Forms.Button();
@@ -44,8 +48,6 @@ namespace IlluminaExplorer
             this.lstFile = new System.Windows.Forms.ListBox();
             this.cbFileExtension = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lblFiles = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -89,6 +91,8 @@ namespace IlluminaExplorer
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.lblFileSearched);
+            this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.lblFiles);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.cbDelimeter);
@@ -108,6 +112,42 @@ namespace IlluminaExplorer
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "File Analyzer";
             // 
+            // lblFileSearched
+            // 
+            this.lblFileSearched.AutoSize = true;
+            this.lblFileSearched.Location = new System.Drawing.Point(268, 76);
+            this.lblFileSearched.Name = "lblFileSearched";
+            this.lblFileSearched.Size = new System.Drawing.Size(13, 13);
+            this.lblFileSearched.TabIndex = 12;
+            this.lblFileSearched.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(185, 76);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(77, 13);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Files Searched";
+            // 
+            // lblFiles
+            // 
+            this.lblFiles.AutoSize = true;
+            this.lblFiles.Location = new System.Drawing.Point(83, 76);
+            this.lblFiles.Name = "lblFiles";
+            this.lblFiles.Size = new System.Drawing.Size(13, 13);
+            this.lblFiles.TabIndex = 10;
+            this.lblFiles.Text = "0";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 76);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(61, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Files Match";
+            // 
             // cbDelimeter
             // 
             this.cbDelimeter.FormattingEnabled = true;
@@ -116,7 +156,7 @@ namespace IlluminaExplorer
             "Pipe"});
             this.cbDelimeter.Location = new System.Drawing.Point(235, 16);
             this.cbDelimeter.Name = "cbDelimeter";
-            this.cbDelimeter.Size = new System.Drawing.Size(53, 21);
+            this.cbDelimeter.Size = new System.Drawing.Size(64, 21);
             this.cbDelimeter.TabIndex = 8;
             this.cbDelimeter.SelectedIndexChanged += new System.EventHandler(this.OnParameterChanged);
             // 
@@ -133,7 +173,7 @@ namespace IlluminaExplorer
             // 
             this.btnRead.Location = new System.Drawing.Point(188, 42);
             this.btnRead.Name = "btnRead";
-            this.btnRead.Size = new System.Drawing.Size(100, 21);
+            this.btnRead.Size = new System.Drawing.Size(111, 21);
             this.btnRead.TabIndex = 6;
             this.btnRead.Text = "Read";
             this.btnRead.UseVisualStyleBackColor = true;
@@ -209,23 +249,6 @@ namespace IlluminaExplorer
             this.label1.TabIndex = 0;
             this.label1.Text = "File extension";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 76);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Files Match";
-            // 
-            // lblFiles
-            // 
-            this.lblFiles.AutoSize = true;
-            this.lblFiles.Location = new System.Drawing.Point(83, 76);
-            this.lblFiles.Name = "lblFiles";
-            this.lblFiles.Size = new System.Drawing.Size(0, 13);
-            this.lblFiles.TabIndex = 10;
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -234,7 +257,7 @@ namespace IlluminaExplorer
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "MainWindow";
-            this.Text = "Form1";
+            this.Text = "Welcome";
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -262,6 +285,8 @@ namespace IlluminaExplorer
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblFiles;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblFileSearched;
+        private System.Windows.Forms.Label label6;
     }
 }
 

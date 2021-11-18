@@ -1,4 +1,4 @@
-﻿using IlluminaExplorer.DirectoryBrowser;
+﻿using IlluminaExplorer.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,11 +16,13 @@ namespace IlluminaExplorer
     public partial class MainWindow : Form
     {
         #region global variable
-        UserPickInfo userPickInfo = null;
+        IUserPickInfo userPickInfo = null;
+        ITreeViewBuilder treeViewBuilder;
         #endregion
         public MainWindow()
         {
             InitializeComponent();
+            treeViewBuilder = new TreeViewBuilder();
             userPickInfo = new UserPickInfo();
             InitData();
         }
@@ -38,9 +40,7 @@ namespace IlluminaExplorer
 
         private void InitStartUpTreeView() {
 
-            TvNodeHelper.DefaultNode(tvFolder);
-
-
+            treeViewBuilder.DefaultNode(tvFolder);
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -51,10 +51,10 @@ namespace IlluminaExplorer
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             lstFile.Items.Clear();
-          var result= folderBrowserDialog1.ShowDialog();
+            var result= folderBrowserDialog1.ShowDialog();
             if (result==DialogResult.OK)
             {
-                TvNodeHelper.ChangeMainFolder(tvFolder, folderBrowserDialog1.SelectedPath);
+                treeViewBuilder.BuildNewNodes(tvFolder, folderBrowserDialog1.SelectedPath);
             }
 
         }
@@ -75,12 +75,11 @@ namespace IlluminaExplorer
 
         }
         private void ManipulateFiles() {
-    
-
-            var info = FolderHelper.GetDirectoryInfo(userPickInfo.SelectedPath);
-         
+            DirectoryInfo info = new DirectoryInfo(userPickInfo.SelectedPath);
+            var Totalfiles=info.GetFiles();
+            SetFileText(lblFileSearched, Totalfiles.Length);
             var files = info.GetFiles( "*"+ txtFileName.Text+ "*" + userPickInfo.Extension);
-            SetFileText(files.Length);
+            SetFileText(lblFiles, files.Length);
             SetProgressBar(files.Count());
 
             for (int i = 0; i < files.Length; i++)
@@ -92,18 +91,18 @@ namespace IlluminaExplorer
 
         }
 
-        private void SetFileText(int count) {
-            if (lblFiles.InvokeRequired)
+        private void SetFileText(Label label, int count) {
+            if (label.InvokeRequired)
             {
-                lstFile.BeginInvoke((Action)delegate ()
+                label.BeginInvoke((Action)delegate ()
                 {
-                    lblFiles.Text = count.ToString();
+                    label.Text = count.ToString();
                 });
 
             }
             else
             {
-                lblFiles.Text = count.ToString();
+                label.Text = count.ToString();
             }
            
         }
@@ -154,12 +153,10 @@ namespace IlluminaExplorer
                 {
                     progressBar1.Value = count;
                 });
-               
             }
-            else
-            {
+            else 
                 progressBar1.Value = count;
-            }
+            
 
 
         }
@@ -170,10 +167,8 @@ namespace IlluminaExplorer
             Regex regex = new Regex("^[a-zA-Z0-9_]");
             bool containsSpecialCharacter = !regex.IsMatch(txtFileName.Text);
             if (containsSpecialCharacter)
-            {
-              
                 return;
-            }
+            
             ManipulateFiles();
         }
 
@@ -211,44 +206,47 @@ namespace IlluminaExplorer
 
             await Task.Run(() =>
             {
+                try
+                {
+
+             
                 DataTable dt = new DataTable();
                 using (var sr = new StreamReader(userPickInfo.FullPath))
                 {
                     var fileContent = sr.ReadToEnd();
                     var lines = fileContent.Split('\n');
-                    fileContent = null;
+                    char deli = char.Parse(userPickInfo.Delimiter);
+                    fileContent = null;//release the memory
                     int totalCount = lines.Length;
                     SetProgressBar(totalCount+1);
                     int rowCount = 0;
 
                     while (lines.Length >rowCount)
                     {
+                        string[] rowValues = lines[rowCount].Split(deli);
                         //we assume header will always be first row in this template
                         if (rowCount == 0)
                         {
-                            string[] headers = lines[rowCount].Split(char.Parse(userPickInfo.Delimiter));
-                            foreach (string header in headers)
+                            foreach (string header in rowValues)
                             {
                                 dt.Columns.Add(header);
                             }
-
-                            rowCount++;
                         }
                         else
                         {
                             var row = dt.NewRow();
-                            string[] rowValues = lines[rowCount].Split(char.Parse(userPickInfo.Delimiter));
+                         
                             for (int i = 0; i < rowValues.Length; i++)
                             {
                                 row[i] = rowValues[i];
                             }
                             dt.Rows.Add(row);
-                            rowCount++;
+                         
                         }
+                        rowCount++;
                         IncreaseProgressBar(rowCount);
                     }
                 }
-
                 if (progressBar1.InvokeRequired)
                 {
                     dataGridView1.BeginInvoke((Action)delegate ()
@@ -261,7 +259,12 @@ namespace IlluminaExplorer
                 {
                     dataGridView1.DataSource = dt;
                 }
-               
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show($"Ops! something went wrong.{ex.Message} ");
+                }
             });
 
         }

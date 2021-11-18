@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IlluminaExplorer
 {
-    public class UserPickInfo
+    public class UserPickInfo : IUserPickInfo
     {
         public string SelectedPath { get; set; }
 
@@ -31,7 +31,8 @@ namespace IlluminaExplorer
                         break;
                 }
                 return del;
-            } set
+            }
+            set
             {
                 _delimiter = value;
             }
@@ -42,16 +43,6 @@ namespace IlluminaExplorer
         {
 
             get { return SelectedPath.ToLower() + "\\" + FileName.ToLower(); }
-
-        }
-
-        private bool _readFile = false;
-        public bool ReadFile
-        {
-
-            get { return _readFile; }
-
-            set { _readFile = value; }
 
         }
 

@@ -46,9 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="common.cs" />
-    <Compile Include="DirectoryBrowser\TvNodeHelper.cs" />
-    <Compile Include="FileAnalyzer\FolderHelper.cs" />
+    <Compile Include="Common\ITreeViewBuilder.cs" />
+    <Compile Include="Common\TreeViewBuilder.cs" />
+    <Compile Include="IUserPickInfo.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
